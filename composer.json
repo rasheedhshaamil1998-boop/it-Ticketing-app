@@ -8,11 +8,13 @@
     "require": {
         "php": "^8.4",
         "laravel/framework": "^13.17",
-        "laravel/tinker": "^3.0"
+        "laravel/tinker": "^3.0",
+        "league/flysystem-aws-s3-v3": "~3.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
         "laravel/boost": "^2.10",
+        "laravel/cloud-cli": "~0.6.7",
         "laravel/pail": "^1.2.5",
         "laravel/pao": "^1.0.6",
         "laravel/pint": "^1.27",
@@ -28,11 +30,23 @@
         }
     },
     "autoload-dev": {
+        "exclude-from-classmap": [
+            "vendor/laravel/cloud-cli/app/"
+        ],
         "psr-4": {
             "Tests\\": "tests/"
         }
     },
     "scripts": {
+        "build:cloud": [
+            "@composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader",
+            "npm ci --ignore-scripts",
+            "npm run build",
+            "@php artisan optimize --no-interaction"
+        ],
+        "deploy:cloud": [
+            "@php artisan migrate --force --no-interaction"
+        ],
         "setup": [
             "composer install",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",

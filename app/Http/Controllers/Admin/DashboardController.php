@@ -26,6 +26,24 @@ class DashboardController extends Controller
         $byStatus = Ticket::selectRaw('status, count(*) as total')->groupBy('status')->get();
         $byPriority = Ticket::selectRaw('priority, count(*) as total')->groupBy('priority')->get();
 
-        return view('admin.dashboard', compact('statistics', 'recentTickets', 'byCategory', 'byStatus', 'byPriority'));
+        $activityStart = today()->subDays(6);
+        $dailyTotals = Ticket::query()
+            ->where('created_at', '>=', $activityStart)
+            ->where('created_at', '<', today()->addDay())
+            ->selectRaw('date(created_at) as day, count(*) as total')
+            ->groupByRaw('date(created_at)')
+            ->pluck('total', 'day');
+
+        $activity = collect(range(0, 6))->map(function (int $offset) use ($activityStart, $dailyTotals): array {
+            $day = $activityStart->copy()->addDays($offset);
+
+            return [
+                'label' => $day->format('D'),
+                'date' => $day->format('M j'),
+                'total' => (int) ($dailyTotals[$day->toDateString()] ?? 0),
+            ];
+        });
+
+        return view('admin.dashboard', compact('statistics', 'recentTickets', 'byCategory', 'byStatus', 'byPriority', 'activity'));
     }
 }

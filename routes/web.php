@@ -43,6 +43,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/tickets/{ticket}/close', [AdminTicketController::class, 'close'])->name('tickets.close');
     Route::post('/tickets/{ticket}/reopen', [AdminTicketController::class, 'reopen'])->name('tickets.reopen');
     Route::resource('users', UserController::class)->only(['index', 'create', 'store', 'show', 'update']);
+    Route::put('/users/{user}/password', [UserController::class, 'resetPassword'])->middleware('throttle:6,1')->name('users.password.update');
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/export', [ReportController::class, 'export'])->name('reports.export');
 });

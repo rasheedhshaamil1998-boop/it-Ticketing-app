@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ResetUserPasswordRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -95,6 +97,16 @@ class UserController extends Controller
         $user->update($data);
 
         return back()->with('status', 'User updated successfully.');
+    }
+
+    public function resetPassword(ResetUserPasswordRequest $request, User $user): RedirectResponse
+    {
+        $user->password = $request->validated('password');
+        $user->setRememberToken(Str::random(60));
+        $user->save();
+
+        return redirect()->route('admin.users.show', $user)
+            ->with('status', 'Password reset successfully. Share the new password with the user securely.');
     }
 
     /**

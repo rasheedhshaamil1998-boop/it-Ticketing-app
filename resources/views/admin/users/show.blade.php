@@ -32,6 +32,24 @@
                     <button class="btn btn-primary w-100" type="submit"><i class="bi bi-save me-2"></i>Update User</button>
                 </form>
             </div>
+            <div class="content-card p-4 mt-4">
+                <h2 class="h5 mb-3">Reset Password</h2>
+                <p class="text-muted">Set a new password if this user has forgotten theirs. Share it with them securely after saving.</p>
+                <form method="POST" action="{{ route('admin.users.password.update', $user) }}">
+                    @csrf
+                    @method('PUT')
+                    <div class="mb-3">
+                        <label class="form-label" for="password">New Password</label>
+                        <input class="form-control @error('password') is-invalid @enderror" id="password" name="password" type="password" autocomplete="new-password" required>
+                        @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="password_confirmation">Confirm New Password</label>
+                        <input class="form-control" id="password_confirmation" name="password_confirmation" type="password" autocomplete="new-password" required>
+                    </div>
+                    <button class="btn btn-primary w-100" type="submit"><i class="bi bi-key me-2"></i>Reset Password</button>
+                </form>
+            </div>
         </div>
         <div class="col-lg-8">
             <div class="content-card p-3">
