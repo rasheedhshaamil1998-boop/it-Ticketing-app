@@ -16,6 +16,7 @@ class AuthFlowTest extends TestCase
             'name' => 'Aisha Khan',
             'email' => 'aisha@example.com',
             'department' => 'Finance',
+            'record_card_number' => '00001234',
             'password' => 'password',
             'password_confirmation' => 'password',
         ]);
@@ -25,6 +26,7 @@ class AuthFlowTest extends TestCase
         $this->assertDatabaseHas('users', [
             'email' => 'aisha@example.com',
             'department' => 'Finance',
+            'record_card_number' => '00001234',
             'role' => 'user',
             'is_active' => true,
         ]);

@@ -150,6 +150,7 @@ class AdminWorkflowTest extends TestCase
         $superAdmin = User::factory()->superAdmin()->create();
 
         $response = $this->actingAs($superAdmin)->put(route('admin.users.update', $superAdmin), [
+            'record_card_number' => $superAdmin->record_card_number,
             'role' => 'admin',
             'is_active' => '1',
         ]);
@@ -176,6 +177,7 @@ class AdminWorkflowTest extends TestCase
         $response = $this->actingAs($superAdmin)->post(route('admin.users.store'), [
             'name' => 'New Helpdesk User',
             'email' => 'new-user@example.com',
+            'record_card_number' => 'RC-NEW-001',
             'department' => 'Operations',
             'role' => 'user',
             'is_active' => '1',
@@ -187,6 +189,7 @@ class AdminWorkflowTest extends TestCase
 
         $response->assertRedirect(route('admin.users.show', $user));
         $this->assertSame('New Helpdesk User', $user->name);
+        $this->assertSame('RC-NEW-001', $user->record_card_number);
         $this->assertSame('Operations', $user->department);
         $this->assertSame('user', $user->role);
         $this->assertTrue($user->is_active);
@@ -200,6 +203,7 @@ class AdminWorkflowTest extends TestCase
         $adminResponse = $this->actingAs($superAdmin)->post(route('admin.users.store'), [
             'name' => 'Ticket Admin',
             'email' => 'ticket-admin@example.com',
+            'record_card_number' => 'RC-ADMIN-001',
             'department' => 'IT',
             'role' => 'admin',
             'is_active' => '1',
@@ -209,6 +213,7 @@ class AdminWorkflowTest extends TestCase
         $superAdminResponse = $this->actingAs($superAdmin)->post(route('admin.users.store'), [
             'name' => 'Access Manager',
             'email' => 'access-manager@example.com',
+            'record_card_number' => 'RC-SUPER-001',
             'department' => 'IT',
             'role' => 'superadmin',
             'is_active' => '1',
@@ -236,7 +241,7 @@ class AdminWorkflowTest extends TestCase
             'password_confirmation' => 'different',
         ]);
 
-        $response->assertSessionHasErrors(['name', 'email', 'department', 'role', 'password']);
+        $response->assertSessionHasErrors(['name', 'email', 'department', 'record_card_number', 'role', 'password']);
         $this->assertDatabaseMissing('users', ['email' => 'not-an-email']);
     }
 

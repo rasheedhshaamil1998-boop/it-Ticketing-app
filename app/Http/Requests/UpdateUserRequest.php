@@ -24,6 +24,7 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'record_card_number' => ['required', 'string', 'max:50', Rule::unique('users', 'record_card_number')->ignore($this->route('user'))],
             'role' => ['required', 'string', Rule::in(['superadmin', 'admin', 'user'])],
             'is_active' => ['required', 'boolean'],
         ];

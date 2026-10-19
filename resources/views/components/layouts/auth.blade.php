@@ -9,7 +9,7 @@
     </script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="{{ asset('css/helpdesk.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/helpdesk.css') }}?v={{ filemtime(public_path('css/helpdesk.css')) }}" rel="stylesheet">
 </head>
 <body>
     <main class="auth-shell d-flex align-items-center py-5">

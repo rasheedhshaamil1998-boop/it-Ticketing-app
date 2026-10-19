@@ -51,6 +51,7 @@ class AuthController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'department' => ['required', 'string', 'max:255'],
+            'record_card_number' => ['required', 'string', 'max:50', 'unique:users,record_card_number'],
             'password' => ['required', 'confirmed', Password::defaults()],
         ]);
 
@@ -58,6 +59,7 @@ class AuthController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'department' => $data['department'],
+            'record_card_number' => $data['record_card_number'],
             'password' => $data['password'],
             'role' => 'user',
             'is_active' => true,

@@ -18,7 +18,12 @@
                     <input class="form-control @error('department') is-invalid @enderror" id="department" name="department" value="{{ old('department') }}" required>
                     @error('department')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-6">
+                    <label class="form-label" for="record_card_number">Record Card Number</label>
+                    <input class="form-control @error('record_card_number') is-invalid @enderror" id="record_card_number" name="record_card_number" type="text" value="{{ old('record_card_number') }}" maxlength="50" required>
+                    @error('record_card_number')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+                <div class="col-md-6">
                     <label class="form-label" for="role">Role</label>
                     <select class="form-select @error('role') is-invalid @enderror" id="role" name="role" required>
                         <option value="user" @selected(old('role', 'user') === 'user')>User</option>
@@ -27,7 +32,7 @@
                     </select>
                     @error('role')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <label class="form-label" for="is_active">Account Status</label>
                     <select class="form-select @error('is_active') is-invalid @enderror" id="is_active" name="is_active" required>
                         <option value="1" @selected(old('is_active', '1') === '1')>Active</option>

@@ -15,6 +15,11 @@
                     @csrf
                     @method('PUT')
                     <div class="mb-3">
+                        <label class="form-label" for="record_card_number">Record Card Number</label>
+                        <input class="form-control @error('record_card_number') is-invalid @enderror" id="record_card_number" name="record_card_number" type="text" value="{{ old('record_card_number', $user->record_card_number) }}" maxlength="50" required>
+                        @error('record_card_number')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label" for="role">Role</label>
                         <select class="form-select" id="role" name="role">
                             <option value="user" @selected($user->role === 'user')>User</option>
