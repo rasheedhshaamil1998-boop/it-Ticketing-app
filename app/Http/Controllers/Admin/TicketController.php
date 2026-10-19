@@ -17,6 +17,7 @@ class TicketController extends Controller
     {
         $tickets = Ticket::query()
             ->with(['user', 'assignee'])
+            ->when($request->string('assigned')->toString() === 'me', fn ($query) => $query->where('assigned_to', $request->user()->id))
             ->when($request->filled('search'), function ($query) use ($request): void {
                 $search = $request->string('search')->toString();
 

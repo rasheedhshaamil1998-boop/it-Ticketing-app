@@ -4,7 +4,7 @@
 @source '../../storage/framework/views/*.php';
 
 @theme {
-    --font-sans: 'Cambria Math', Cambria, 'Times New Roman', serif;
-    --font-serif: 'Cambria Math', Cambria, 'Times New Roman', serif;
-    --font-mono: 'Cambria Math', Cambria, 'Times New Roman', serif;
+    --font-sans: Calibri, 'Segoe UI', Arial, sans-serif;
+    --font-serif: Calibri, 'Segoe UI', Arial, sans-serif;
+    --font-mono: Calibri, 'Segoe UI', Arial, sans-serif;
 }

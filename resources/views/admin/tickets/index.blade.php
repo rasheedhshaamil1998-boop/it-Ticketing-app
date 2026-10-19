@@ -1,6 +1,6 @@
 <x-layouts.app title="All Tickets - IT HELPDESK" heading="All Tickets">
     @php
-        $activeFilters = collect(['search', 'status', 'priority', 'category'])
+        $activeFilters = collect(['search', 'status', 'priority', 'category', 'assigned'])
             ->filter(fn ($filter) => request()->filled($filter))
             ->count();
     @endphp
@@ -23,6 +23,10 @@
         </div>
 
         <form class="row g-2 align-items-end" method="GET">
+            @if (request('assigned') === 'me')
+                <input type="hidden" name="assigned" value="me">
+                <div class="col-12"><span class="badge text-bg-primary">Assigned to me</span></div>
+            @endif
             <div class="col-md-3">
                 <label class="form-label" for="search">Search</label>
                 <input class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="Ticket, subject, user">

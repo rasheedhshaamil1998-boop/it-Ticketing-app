@@ -23,8 +23,10 @@ class DashboardController extends Controller
 
         $recentTickets = Ticket::query()
             ->whereBelongsTo($user)
+            ->with(['user', 'assignee'])
             ->latest()
-            ->limit(8)
+            ->orderByDesc('id')
+            ->limit(10)
             ->get();
 
         return view('dashboard', compact('statistics', 'recentTickets'));

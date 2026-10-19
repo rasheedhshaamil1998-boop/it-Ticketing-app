@@ -1,62 +1,15 @@
-<x-layouts.app title="Dashboard - IT HELPDESK" heading="User Dashboard">
-    <div class="dashboard-hero mb-4">
-        <div>
-            <div class="text-uppercase small fw-semibold mb-2">Support Center</div>
-            <h2 class="display-6 fw-bold mb-2">How can IT help today?</h2>
-            <p class="mb-0">Submit a support request, track progress, and continue the conversation with the helpdesk team.</p>
-        </div>
-        <a href="{{ route('tickets.create') }}" class="btn btn-light btn-lg"><i class="bi bi-plus-circle me-2"></i>Create New Ticket</a>
-    </div>
-    <div class="row g-3 mb-4">
-        @foreach ($statistics as $label => $value)
-            <div class="col-sm-6 col-xl">
-                <div class="stat-card stat-card-modern p-3 h-100">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <div class="text-muted small">{{ $label }}</div>
-                            <div class="fs-3 fw-bold">{{ $value }}</div>
-                        </div>
-                        <span class="stat-icon"><i class="bi bi-ticket-detailed"></i></span>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-    </div>
-
-    <div class="content-card content-card-modern p-3">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="h5 mb-0">Recent Tickets</h2>
-            <a href="{{ route('tickets.index') }}" class="btn btn-sm btn-outline-primary">View All</a>
-        </div>
-        <div class="table-responsive">
-            <table class="table align-middle">
-                <thead>
-                    <tr>
-                        <th>Ticket Number</th>
-                        <th>Subject</th>
-                        <th>Category</th>
-                        <th>Priority</th>
-                        <th>Status</th>
-                        <th>Created Date</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($recentTickets as $ticket)
-                        <tr>
-                            <td class="fw-semibold">{{ $ticket->ticket_number }}</td>
-                            <td>{{ $ticket->subject }}</td>
-                            <td>{{ $ticket->category }}</td>
-                            <td><span class="badge {{ $ticket->priorityBadgeClass() }}">{{ $ticket->priority }}</span></td>
-                            <td><span class="badge {{ $ticket->statusBadgeClass() }}">{{ $ticket->status }}</span></td>
-                            <td>{{ $ticket->created_at->format('M d, Y') }}</td>
-                            <td><a href="{{ route('tickets.show', $ticket) }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-eye"></i></a></td>
-                        </tr>
-                    @empty
-                        <tr><td colspan="7" class="text-center text-muted py-4">No tickets submitted yet.</td></tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+<x-layouts.app title="Dashboard - IT HELPDESK" heading="My Dashboard">
+    <div class="operations-dashboard enterprise-dashboard employee-dashboard">
+        <section class="overview-heading"><div><div class="overview-eyebrow"><span></span> Your support centre</div><h2>Hello, {{ auth()->user()->name }}.</h2><p>Track your requests and get the support you need.</p></div><a class="btn btn-primary" href="{{ route('tickets.create') }}"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Create New Ticket</a></section>
+        <section class="overview-metrics" aria-label="My ticket statistics">
+            <x-dashboard-stat label="My Tickets" :value="$statistics['Total Tickets']" note="All your submitted requests" icon="ticket-detailed" tone="blue" :href="route('tickets.index')" />
+            <x-dashboard-stat label="Open Requests" :value="$statistics['Open Tickets']" note="Waiting for a response" icon="inbox" tone="amber" :href="route('tickets.index', ['status' => 'Open'])" />
+            <x-dashboard-stat label="In Progress" :value="$statistics['In Progress Tickets']" note="Your team is working on it" icon="hourglass-split" tone="violet" :href="route('tickets.index', ['status' => 'In Progress'])" />
+            <x-dashboard-stat label="Resolved Requests" :value="$statistics['Resolved Tickets']" note="Successfully resolved" icon="check2-circle" tone="green" :href="route('tickets.index', ['status' => 'Resolved'])" />
+            <x-dashboard-stat label="Closed Requests" :value="$statistics['Closed Tickets']" note="Completed support requests" icon="archive" tone="cyan" :href="route('tickets.index', ['status' => 'Closed'])" />
+        </section>
+        <section class="dashboard-quick-actions" aria-label="Quick actions"><span>Quick actions</span><a href="{{ route('tickets.create') }}"><i class="bi bi-plus-circle" aria-hidden="true"></i>Create New Ticket</a><a href="{{ route('tickets.index', ['status' => 'Open']) }}"><i class="bi bi-inbox" aria-hidden="true"></i>View Open Requests</a><a href="{{ route('profile') }}"><i class="bi bi-person-circle" aria-hidden="true"></i>My Profile</a></section>
+        <x-recent-tickets :tickets="$recentTickets" :admin="false" title="My Recent Tickets" />
+        <footer class="overview-footer"><span>IT HELPDESK / Maldives Immigration</span><span>Your requests, always in view.</span></footer>
     </div>
 </x-layouts.app>
